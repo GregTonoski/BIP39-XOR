@@ -19,3 +19,6 @@ Use input keys to decrypt and output a key. Or, equivalently, encrypt an input k
 `$ bash BIP39-XOR.bash --auto-input`
 
 Generate input BIP-39 twelve codewords randomly and output two complementary encryption keys encoded in BIP39 codewords.
+
+## Screenshot
+![image](https://github.com/GregTonoski/BIP39-XOR/assets/111286121/d9ed7f32-59a0-42ae-b5c2-32f47938fdb0)
