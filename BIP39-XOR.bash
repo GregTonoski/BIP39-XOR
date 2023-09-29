@@ -4349,7 +4349,7 @@ if [[ -z "${INPUT_CODEWORDS_ARRAY2}" ]] ; then
     ENCRYPTION_KEY1=${CANDIDATE_KEY}
     fn_bip39_checksum ${ENCRYPTION_KEY1}
     ENCRYPTION_KEY1_CHECKSUM_BIP39=${FN_BIP39_CHECKSUM_RESULT}
-    printf "Candidate encryption key with checksum BIP-39: 0x%s 0x%02X\r" "${ENCRYPTION_KEY1}" ${ENCRYPTION_KEY1_CHECKSUM_BIP39}
+    printf "Candidate encryption key with checksum BIP-39: 0x%s 0x%02X\r" "${ENCRYPTION_KEY1}" ${ENCRYPTION_KEY1_CHECKSUM_BIP39} # TODO: \r carriage return is interpreted as \n in Git Bash in Windows resulting in output formatting (visual) divergance
     fn_bitwiseXOR ${ENCRYPTION_KEY1} ${ENTROPY_HEX}
     ENCRYPTION_KEY2=${RESULT_XOR}
     fn_bip39_checksum ${ENCRYPTION_KEY2}
