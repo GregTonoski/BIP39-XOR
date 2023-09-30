@@ -20,5 +20,6 @@ Use input keys to decrypt and output a key. Or, equivalently, encrypt an input k
 
 Generate input BIP-39 twelve codewords randomly and output two complementary encryption keys encoded in BIP39 codewords.
 
-## Screenshot
+## Screenshots
 ![image](https://github.com/GregTonoski/BIP39-XOR/assets/111286121/d9ed7f32-59a0-42ae-b5c2-32f47938fdb0)
+![image](https://github.com/GregTonoski/BIP39-XOR/assets/111286121/a5e417b2-3c76-4650-b5e0-f50b09a703cc)
