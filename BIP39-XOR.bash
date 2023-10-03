@@ -48,6 +48,9 @@ declare -i bits_to_shift=0
 declare -i last_bits_value=0
 declare -i first_bits_value=0
 declare -i i=0
+declare -i FN_RIGHT_ROTATE_32_RESULT=0
+declare -i FN_RIGHT_SHIFT_32_RESULT=0
+declare FN_SHA256_RESULT=""
 
 fn_eng_words_to_hex () {
 
@@ -4203,6 +4206,248 @@ fn_hex_to_bip39_eng_words () {
   BIP39_WORDS="${words_string}"
 }
 
+fn_right_rotate_32(){
+
+  FN_RIGHT_ROTATE_32_RESULT=0
+
+  FN_RIGHT_ROTATE_32_RESULT=$(( (${1} / 2 ** ${2}) + (${1} % 2 ** ${2}) * 2 ** (32 - ${2}) ))
+}
+
+fn_right_shift_32(){
+
+  FN_RIGHT_SHIFT_32_RESULT=0
+
+  FN_RIGHT_SHIFT_32_RESULT=$(( ${1} >> ${2} ))
+}
+
+ fn_sha256 () {
+  export LC_ALL=C
+  CHUNK=""
+  p1=0
+  p2=0
+  p3=0
+  s0=0
+  s1=0
+  w=0
+  w_index=0
+  ch=0
+  temp1=0
+  temp2=0
+  maj=0
+  
+  a=0
+  b=0
+  c=0
+  d=0
+  e=0
+  f=0
+  g=0
+  h=0
+  bits_count=0
+  temp_name_var=""
+  temp_name=""
+  temp_name2=""
+  
+  SHA2_WORDS0=$((0x6a09e667))
+  SHA2_WORDS1=$((0xbb67ae85))
+  SHA2_WORDS2=$((0x3c6ef372))
+  SHA2_WORDS3=$((0xa54ff53a))
+  SHA2_WORDS4=$((0x510e527f))
+  SHA2_WORDS5=$((0x9b05688c))
+  SHA2_WORDS6=$((0x1f83d9ab))
+  SHA2_WORDS7=$((0x5be0cd19))
+  
+  KL0=$((0x428a2f98))
+  KL1=$((0x71374491))
+  KL2=$((0xb5c0fbcf))
+  KL3=$((0xe9b5dba5))
+  KL4=$((0x3956c25b))
+  KL5=$((0x59f111f1))
+  KL6=$((0x923f82a4))
+  KL7=$((0xab1c5ed5))
+  KL8=$((0xd807aa98))
+  KL9=$((0x12835b01))
+  KL10=$((0x243185be))
+  KL11=$((0x550c7dc3))
+  KL12=$((0x72be5d74))
+  KL13=$((0x80deb1fe))
+  KL14=$((0x9bdc06a7))
+  KL15=$((0xc19bf174))
+  KL16=$((0xe49b69c1))
+  KL17=$((0xefbe4786))
+  KL18=$((0x0fc19dc6))
+  KL19=$((0x240ca1cc))
+  KL20=$((0x2de92c6f))
+  KL21=$((0x4a7484aa))
+  KL22=$((0x5cb0a9dc))
+  KL23=$((0x76f988da))
+  KL24=$((0x983e5152))
+  KL25=$((0xa831c66d))
+  KL26=$((0xb00327c8))
+  KL27=$((0xbf597fc7))
+  KL28=$((0xc6e00bf3))
+  KL29=$((0xd5a79147))
+  KL30=$((0x06ca6351))
+  KL31=$((0x14292967))
+  KL32=$((0x27b70a85))
+  KL33=$((0x2e1b2138))
+  KL34=$((0x4d2c6dfc))
+  KL35=$((0x53380d13))
+  KL36=$((0x650a7354))
+  KL37=$((0x766a0abb))
+  KL38=$((0x81c2c92e))
+  KL39=$((0x92722c85))
+  KL40=$((0xa2bfe8a1))
+  KL41=$((0xa81a664b))
+  KL42=$((0xc24b8b70))
+  KL43=$((0xc76c51a3))
+  KL44=$((0xd192e819))
+  KL45=$((0xd6990624))
+  KL46=$((0xf40e3585))
+  KL47=$((0x106aa070))
+  KL48=$((0x19a4c116))
+  KL49=$((0x1e376c08))
+  KL50=$((0x2748774c))
+  KL51=$((0x34b0bcb5))
+  KL52=$((0x391c0cb3))
+  KL53=$((0x4ed8aa4a))
+  KL54=$((0x5b9cca4f))
+  KL55=$((0x682e6ff3))
+  KL56=$((0x748f82ee))
+  KL57=$((0x78a5636f))
+  KL58=$((0x84c87814))
+  KL59=$((0x8cc70208))
+  KL60=$((0x90befffa))
+  KL61=$((0xa4506ceb))
+  KL62=$((0xbef9a3f7))
+  KL63=$((0xc67178f2))
+
+  bits_count=$(( ${#1} * ${BITS_IN_NIBBLE} ))
+  for (( i=$(( ${bits_count} + 8 )) ; i < $(( 512 - 64)) ; i=${i}+${BITS_IN_NIBBLE} )); do
+    printf -v "CHUNK" "%s0" "${CHUNK}"
+  done
+  printf -v "CHUNK" "%s80%s%016X" "${1}" "${CHUNK}" "${bits_count}"
+
+  for ((count=0; count < 16; count++)); do
+    temp_name="w${count}"
+    printf -v ${temp_name} "%d" $((16#${CHUNK:$count*8:8}))
+  done
+
+  for ((count = 16; count < 64; count++)); do
+
+      w_index=$((count - 15))
+      temp_name="w${w_index}"
+      fn_right_rotate_32 ${!temp_name} 7 # for the portability to zsh - replace indirect redirection with eval
+      p1=${FN_RIGHT_ROTATE_32_RESULT}
+
+      fn_right_rotate_32 ${!temp_name} 18
+      p2=${FN_RIGHT_ROTATE_32_RESULT}
+
+      fn_right_shift_32 ${!temp_name} 3
+      p3=${FN_RIGHT_SHIFT_32_RESULT}
+
+      s0=$(( p1 ^ p2 ^ p3 ))
+      
+      w_index=$((count - 2))
+      temp_name="w${w_index}"
+      fn_right_rotate_32 ${!temp_name} 17
+      p1=${FN_RIGHT_ROTATE_32_RESULT}
+  
+      fn_right_rotate_32 ${!temp_name} 19
+      p2=${FN_RIGHT_ROTATE_32_RESULT}
+  
+      fn_right_shift_32 ${!temp_name} 10
+      p3=${FN_RIGHT_SHIFT_32_RESULT}
+  
+      s1=$(( p1 ^ p2 ^ p3 ))
+  
+      w_index=$((count - 16 ))
+      temp_name="w${w_index}"
+      temp_name2="w${count}"
+  
+      printf -v ${temp_name2} "%d" $(( ${!temp_name} + ${s0} )) 
+      w_index=$((count - 7 ))
+      temp_name="w${w_index}"
+      temp_name2="w${count}"
+      printf -v ${temp_name2} "%d" $(( (${!temp_name2} + ${!temp_name} + ${s1}) % 2 ** 32 ))
+  done
+
+  a=${SHA2_WORDS0}
+  b=${SHA2_WORDS1}
+  c=${SHA2_WORDS2}
+  d=${SHA2_WORDS3}
+  e=${SHA2_WORDS4}
+  f=${SHA2_WORDS5}
+  g=${SHA2_WORDS6}
+  h=${SHA2_WORDS7}
+
+  for ((round = 0; round < 64 ; round++)); do
+
+      fn_right_rotate_32 ${e} 6
+      p1=${FN_RIGHT_ROTATE_32_RESULT}
+  
+      fn_right_rotate_32 ${e} 11
+      p2=${FN_RIGHT_ROTATE_32_RESULT}
+  
+      fn_right_rotate_32 ${e} 25
+      p3=${FN_RIGHT_ROTATE_32_RESULT}
+  
+      s1=$(( p1 ^ p2 ^ p3 ))
+  
+      ch=$(( ( ( ${e} & ${f} ) ^ (~${e} & ${g}) ) % 2 ** 32 ))
+  
+      KLround="KL${round}"
+      temp_name="w${round}"
+      temp1=$(( ( ${h} + ${s1} + ${ch} + ${!KLround} + ${!temp_name} ) % 2 ** 32 ))
+  
+      fn_right_rotate_32 ${a} 2
+      p1=${FN_RIGHT_ROTATE_32_RESULT}
+  
+      fn_right_rotate_32 ${a} 13
+      p2=${FN_RIGHT_ROTATE_32_RESULT}
+  
+      fn_right_rotate_32 ${a} 22
+      p3=${FN_RIGHT_ROTATE_32_RESULT}
+
+      s0=$(( p1 ^ p2 ^ p3 ))
+
+      maj=$(( ( ( ${a} & ${b} ) ^ ( ${a} & ${c} ) ^ ( ${b} & ${c} ) ) % 2 ** 32 ))
+
+      temp2=$(( (s0 + maj) % 2 ** 32 ))
+   
+      h=${g}
+      g=${f}
+      f=${e}
+      e=$(( ( ${d} + ${temp1} ) % 2 ** 32 ))
+      d=${c}
+      c=${b}
+      b=${a}
+      a=$(( ( ${temp1} + ${temp2} ) % 2 ** 32 ))
+  done
+  
+  SHA2_WORDS0=$(( ( ${SHA2_WORDS0} + ${a} ) % 2 ** 32 ))
+  
+  SHA2_WORDS1=$(( ( ${SHA2_WORDS1} + ${b} ) % 2 ** 32 ))
+  
+  SHA2_WORDS2=$(( ( ${SHA2_WORDS2} + ${c} ) % 2 ** 32 ))
+  
+  SHA2_WORDS3=$(( ( ${SHA2_WORDS3} + ${d} ) % 2 ** 32 ))
+  
+  SHA2_WORDS4=$(( ( ${SHA2_WORDS4} + ${e} ) % 2 ** 32 ))
+  
+  SHA2_WORDS5=$(( ( ${SHA2_WORDS5} + ${f} ) % 2 ** 32 ))
+
+  SHA2_WORDS6=$(( ( ${SHA2_WORDS6} + ${g} ) % 2 ** 32 ))
+  
+  SHA2_WORDS7=$(( ( ${SHA2_WORDS7} + ${h} ) % 2 ** 32 ))
+
+  FN_SHA256_RESULT=""
+  for (( i=0 ; i < 8; i=i+1 )); do
+    temp_name_var="SHA2_WORDS${i}"
+    printf -v "FN_SHA256_RESULT" "%s%08X" "${FN_SHA256_RESULT}" "${!temp_name_var}"
+  done
+}
+
 fn_bip39_checksum () {
   declare sha256_digest_hex=""
   declare -i bip39_checksum=0
@@ -4214,8 +4459,11 @@ fn_bip39_checksum () {
     sha256_digest_hex=$( for (( counter=0; counter<${#1}; counter+=2 )); do printf "\x${1:$counter:2}"; done | shasum -a 256 -b )
   elif command -v openssl >/dev/null ; then
     sha256_digest_hex=$( for (( counter=0; counter<${#1}; counter+=2 )); do printf "\x${1:$counter:2}"; done | openssl dgst -digest -sha256 -r )
+  elif [[ -n "${BASH_VERSION}" ]] ; then
+    fn_sha256 ${1}
+    sha256_digest_hex=${FN_SHA256_RESULT}
   else
-    echo "There isn't sha256sum or shasum or openssl installed. Script execution interrupted."
+    echo "There isn't sha256sum or shasum or openssl or bash (version 2.05b or above) installed. Script execution interrupted."
     exit 6
   fi
 
