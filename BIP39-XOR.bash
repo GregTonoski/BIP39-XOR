@@ -4540,7 +4540,7 @@ elif  [[ "${1}" = "-h" || "${1}" = "--help" || $# -eq 0 ]] ; then
 elif [[ "${1}" = "--auto-input" ]] ; then
   fn_pick_at_random 32
   ENTROPY_HEX=${CANDIDATE_KEY}
-  BIP39_CHECKSUM_BITS_COUNT=$(( ${#ENTROPY_HEX} * ${BITS_IN_NIBBLE} / 33 ))
+  BIP39_CHECKSUM_BITS_COUNT=$(( ${#ENTROPY_HEX} * ${BITS_IN_NIBBLE} / 32 ))
   fn_bip39_checksum ${ENTROPY_HEX}
   ENTROPY_CHECKSUM_BIP39=${FN_BIP39_CHECKSUM_RESULT}
 else
