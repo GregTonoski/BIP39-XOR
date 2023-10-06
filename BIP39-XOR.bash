@@ -4220,7 +4220,7 @@ fn_right_shift_32(){
   FN_RIGHT_SHIFT_32_RESULT=$(( ${1} >> ${2} ))
 }
 
- fn_sha256 () {
+fn_sha256 () {
   export LC_ALL=C
   CHUNK=""
   p1=0
@@ -4244,9 +4244,9 @@ fn_right_shift_32(){
   g=0
   h=0
   bits_count=0
-  temp_name_var=""
+  sha256_word=0
   temp_name=""
-  temp_name2=""
+  temp_sum=0
   
   SHA2_WORDS0=$((0x6a09e667))
   SHA2_WORDS1=$((0xbb67ae85))
@@ -4336,40 +4336,41 @@ fn_right_shift_32(){
   for ((count = 16; count < 64; count++)); do
 
       w_index=$((count - 15))
-      temp_name="w${w_index}"
-      fn_right_rotate_32 ${!temp_name} 7 # for the portability to zsh - replace indirect redirection with eval
+      eval "w=\$w${w_index}"
+      fn_right_rotate_32 ${w} 7
       p1=${FN_RIGHT_ROTATE_32_RESULT}
 
-      fn_right_rotate_32 ${!temp_name} 18
+      fn_right_rotate_32 ${w} 18
       p2=${FN_RIGHT_ROTATE_32_RESULT}
 
-      fn_right_shift_32 ${!temp_name} 3
+      fn_right_shift_32 ${w} 3
       p3=${FN_RIGHT_SHIFT_32_RESULT}
 
       s0=$(( p1 ^ p2 ^ p3 ))
       
       w_index=$((count - 2))
-      temp_name="w${w_index}"
-      fn_right_rotate_32 ${!temp_name} 17
+      eval "w=\$w${w_index}"
+      fn_right_rotate_32 ${w} 17
       p1=${FN_RIGHT_ROTATE_32_RESULT}
   
-      fn_right_rotate_32 ${!temp_name} 19
+      fn_right_rotate_32 ${w} 19
       p2=${FN_RIGHT_ROTATE_32_RESULT}
   
-      fn_right_shift_32 ${!temp_name} 10
+      fn_right_shift_32 ${w} 10
       p3=${FN_RIGHT_SHIFT_32_RESULT}
   
       s1=$(( p1 ^ p2 ^ p3 ))
   
       w_index=$((count - 16 ))
-      temp_name="w${w_index}"
-      temp_name2="w${count}"
+      eval "w=\$w${w_index}"
+      temp_name="w${count}"
   
-      printf -v ${temp_name2} "%d" $(( ${!temp_name} + ${s0} )) 
+      printf -v ${temp_name} "%d" $(( ${w} + ${s0} )) 
       w_index=$((count - 7 ))
-      temp_name="w${w_index}"
-      temp_name2="w${count}"
-      printf -v ${temp_name2} "%d" $(( (${!temp_name2} + ${!temp_name} + ${s1}) % 2 ** 32 ))
+      eval "w=\$w${w_index}"
+      eval "temp_sum=\$${temp_name}"
+      temp_name="w${count}"
+      printf -v ${temp_name} "%d" $(( (${temp_sum} + ${w} + ${s1}) % 2 ** 32 ))
   done
 
   a=${SHA2_WORDS0}
@@ -4396,9 +4397,9 @@ fn_right_shift_32(){
   
       ch=$(( ( ( ${e} & ${f} ) ^ (~${e} & ${g}) ) % 2 ** 32 ))
   
-      KLround="KL${round}"
-      temp_name="w${round}"
-      temp1=$(( ( ${h} + ${s1} + ${ch} + ${!KLround} + ${!temp_name} ) % 2 ** 32 ))
+      eval "KLround=\$KL${round}"
+      eval "w=\$w${round}"
+      temp1=$(( ( ${h} + ${s1} + ${ch} + ${KLround} + ${w} ) % 2 ** 32 ))
   
       fn_right_rotate_32 ${a} 2
       p1=${FN_RIGHT_ROTATE_32_RESULT}
@@ -4443,8 +4444,8 @@ fn_right_shift_32(){
 
   FN_SHA256_RESULT=""
   for (( i=0 ; i < 8; i=i+1 )); do
-    temp_name_var="SHA2_WORDS${i}"
-    printf -v "FN_SHA256_RESULT" "%s%08X" "${FN_SHA256_RESULT}" "${!temp_name_var}"
+    eval "sha256_word=\$SHA2_WORDS${i}"
+    printf -v "FN_SHA256_RESULT" "%s%08X" "${FN_SHA256_RESULT}" "${sha256_word}"
   done
 }
 
