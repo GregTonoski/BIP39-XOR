@@ -4535,9 +4535,13 @@ elif (( $# == 25 || $# == 31 || $# == 37 || $# == 43 || $# == 49 )) ; then
     echo "ERROR: the input words are not accepted because XOR keyword/delimiter is missing or misplaced."
     exit 2
   fi
-elif  [[ "${1}" = "-h" || "${1}" = "--help" || $# -eq 0 ]] ; then
+elif  [[ "${1}" = "-h" || "${1}" = "--help"]] ; then
   helptext_show
   exit 2
+elif [[ $# -eq 0 ]] ; then
+  helptext_show
+  exec ${SHELL}
+  exit
 elif [[ "${1}" = "--auto-input" ]] ; then
   fn_pick_at_random 32
   ENTROPY_HEX=${CANDIDATE_KEY}
