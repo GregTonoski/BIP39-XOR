@@ -4559,7 +4559,8 @@ if [[ $# -eq 0 ]] ; then
   printf "Examples:\n"
   printf "BIP39 codewords: time until select then return void float true false case catch depart\n"
   printf "BIP39 codewords: time until select then return void float true false case catch depart XOR age age age age age age age age age age age used\n\n"
-  read -p "BIP39 codewords: " read_input
+  printf "BIP39 codewords: "
+  read read_input
   fn_parse_arguments ${read_input}
 else
   fn_parse_arguments $@
@@ -4635,7 +4636,7 @@ else
   printf "%s \n" "${BIP39_WORDS}"
 fi
 if [ -n "$PS1" ]; then # intended to prevent closure of a terminal window by a system
-  if [ "${0%/*}" == "${0}" ] ; then
+  if [ "${0%/*}" = "${0}" ] ; then
     cd ${0%\\*}
   else
     cd ${0%/*}
