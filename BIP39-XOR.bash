@@ -4641,7 +4641,6 @@ if [ -n "$PS1" ]; then # intended to prevent closure of a terminal window by a s
   else
     cd ${0%/*}
   fi
-  echo $PWD
   exec ${SHELL}
 fi
 exit
