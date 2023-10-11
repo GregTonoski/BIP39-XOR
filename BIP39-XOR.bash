@@ -22,7 +22,7 @@ helptext_show () {
   printf "Use input keys to decrypt and output a key. Or, equivalently, encrypt an input key with another one and output two complementary encryption keys in BIP39 format.\n\n"
   printf "$ bash BIP39-XOR.bash --auto-input\n"
   printf "Generate input BIP-39 twelve codewords randomly and output two complementary encryption keys encoded in BIP39 codewords.\n\n"
-  echo "This is the 3.0.0 version. Release date: 20231006T111800Z. Author: Greg Tonoski <greg.tonoski@gmail.com>."
+  echo "This is the 4.0.0 version. Release date: 20231011T131300Z. Author: Greg Tonoski <greg.tonoski@gmail.com>."
 }
 
 declare INPUT_CODEWORDS_ARRAY1=""
