@@ -4504,55 +4504,65 @@ fn_pick_at_random () {
   printf -v "CANDIDATE_KEY" "%.*s" "${1}" "${CANDIDATE_KEY}"
 }
 
-if (( $# == 30 || $# == 36 || $# == 42 || $# == 48 )) ; then
-  for (( i=1 ; i <=  $# / 2 ; i++ )) ; do
-    INPUT_CODEWORDS_ARRAY1="${INPUT_CODEWORDS_ARRAY1}${!i} "
-  done
-  for (( i=$(($# / 2 + 1)) ; i <= $# ; i++ )); do
-    INPUT_CODEWORDS_ARRAY2="${INPUT_CODEWORDS_ARRAY2}${!i} "
-  done
-elif (( $# == 12 || $# == 15 || $# == 18 || $# == 21 || $# == 24 )) ; then
-  INPUT_CODEWORDS_ARRAY1="$@"
-elif (( $# == 13 || $# == 16 || $# == 19 || $# == 22 )) ; then
-  if [[ "${!#}" = "XOR" ]]; then
-    for (( i=1 ; i <  $#  ; i++ )) ; do
-      INPUT_CODEWORDS_ARRAY1="${INPUT_CODEWORDS_ARRAY1}${!i} "
-    done
-  fi
-elif (( $# == 25 || $# == 31 || $# == 37 || $# == 43 || $# == 49 )) ; then
-  median=$(( $#/2 + 1 ))
-  if [[ "${!median}" = "XOR" ]] ; then
+fn_parse_arguments () {
+  if (( $# == 30 || $# == 36 || $# == 42 || $# == 48 )) ; then
     for (( i=1 ; i <=  $# / 2 ; i++ )) ; do
       INPUT_CODEWORDS_ARRAY1="${INPUT_CODEWORDS_ARRAY1}${!i} "
     done
-    for (( i=$(($# / 2 + 2)) ; i <= $# ; i++ )); do
-    INPUT_CODEWORDS_ARRAY2="${INPUT_CODEWORDS_ARRAY2}${!i} "
+    for (( i=$(($# / 2 + 1)) ; i <= $# ; i++ )); do
+      INPUT_CODEWORDS_ARRAY2="${INPUT_CODEWORDS_ARRAY2}${!i} "
     done
-  elif [[ "${25}" = "XOR" ]]; then
-    for (( i=1 ; i <  25 ; i++ )) ; do
-      INPUT_CODEWORDS_ARRAY1="${INPUT_CODEWORDS_ARRAY1}${!i} "
-    done
-  else
-    echo "ERROR: the input words are not accepted because XOR keyword/delimiter is missing or misplaced."
+  elif (( $# == 12 || $# == 15 || $# == 18 || $# == 21 || $# == 24 )) ; then
+    INPUT_CODEWORDS_ARRAY1="$@"
+  elif (( $# == 13 || $# == 16 || $# == 19 || $# == 22 )) ; then
+    if [[ "${!#}" = "XOR" ]]; then
+      for (( i=1 ; i <  $#  ; i++ )) ; do
+        INPUT_CODEWORDS_ARRAY1="${INPUT_CODEWORDS_ARRAY1}${!i} "
+      done
+    fi
+  elif (( $# == 25 || $# == 31 || $# == 37 || $# == 43 || $# == 49 )) ; then
+    median=$(( $#/2 + 1 ))
+    if [[ "${!median}" = "XOR" ]] ; then
+      for (( i=1 ; i <=  $# / 2 ; i++ )) ; do
+        INPUT_CODEWORDS_ARRAY1="${INPUT_CODEWORDS_ARRAY1}${!i} "
+      done
+      for (( i=$(($# / 2 + 2)) ; i <= $# ; i++ )); do
+      INPUT_CODEWORDS_ARRAY2="${INPUT_CODEWORDS_ARRAY2}${!i} "
+      done
+    elif [[ "${25}" = "XOR" ]]; then
+      for (( i=1 ; i <  25 ; i++ )) ; do
+        INPUT_CODEWORDS_ARRAY1="${INPUT_CODEWORDS_ARRAY1}${!i} "
+      done
+    else
+      echo "ERROR: the input words are not accepted because XOR keyword/delimiter is missing or misplaced."
+      exit 2
+    fi
+  elif  [[ "${1}" = "-h" || "${1}" = "--help" ]] ; then
+    helptext_show
     exit 2
+  elif [[ "${1}" = "--auto-input" ]] ; then
+    fn_pick_at_random 32
+    ENTROPY_HEX=${CANDIDATE_KEY}
+    BIP39_CHECKSUM_BITS_COUNT=$(( ${#ENTROPY_HEX} * ${BITS_IN_NIBBLE} / 32 ))
+    fn_bip39_checksum ${ENTROPY_HEX}
+    ENTROPY_CHECKSUM_BIP39=${FN_BIP39_CHECKSUM_RESULT}
+  else
+    echo "ERROR: the input words are not accepted. Either there are too many or too few of them or the \"XOR\" delimiting keyword is missing or misplaced. There were $# words read."
+    helptext_show
+    exit 1
   fi
-elif  [[ "${1}" = "-h" || "${1}" = "--help"]] ; then
-  helptext_show
-  exit 2
-elif [[ $# -eq 0 ]] ; then
-  helptext_show
-  exec ${SHELL}
-  exit
-elif [[ "${1}" = "--auto-input" ]] ; then
-  fn_pick_at_random 32
-  ENTROPY_HEX=${CANDIDATE_KEY}
-  BIP39_CHECKSUM_BITS_COUNT=$(( ${#ENTROPY_HEX} * ${BITS_IN_NIBBLE} / 32 ))
-  fn_bip39_checksum ${ENTROPY_HEX}
-  ENTROPY_CHECKSUM_BIP39=${FN_BIP39_CHECKSUM_RESULT}
+}
+
+if [[ $# -eq 0 ]] ; then
+  printf "\nEncrypt or decrypt 12, 15, 18, 21 or 24 BIP39 codewords array (so-called \"seed phrase\") using exclusive OR (XOR).\n"
+  printf "The program may be terminated at any time by ctrl+c keys combination.\n"
+  printf "Examples:\n"
+  printf "BIP39 codewords: time until select then return void float true false case catch depart\n"
+  printf "BIP39 codewords: time until select then return void float true false case catch depart XOR age age age age age age age age age age age used\n\n"
+  read -p "BIP39 codewords: " read_input
+  fn_parse_arguments ${read_input}
 else
-  echo "ERROR: the input words are not accepted. Either there are too many or too few of them or the \"XOR\" delimiting keyword is missing or misplaced. There were $# words read."
-  helptext_show
-  exit 1
+  fn_parse_arguments $@
 fi
 
 if [[ -n "${INPUT_CODEWORDS_ARRAY1}" ]] ; then
@@ -4603,7 +4613,7 @@ if [[ -z "${INPUT_CODEWORDS_ARRAY2}" ]] ; then
     ENCRYPTION_KEY1=${CANDIDATE_KEY}
     fn_bip39_checksum ${ENCRYPTION_KEY1}
     ENCRYPTION_KEY1_CHECKSUM_BIP39=${FN_BIP39_CHECKSUM_RESULT}
-    printf "Candidate encryption key with checksum BIP-39: 0x%s 0x%02X\r" "${ENCRYPTION_KEY1}" ${ENCRYPTION_KEY1_CHECKSUM_BIP39} # TODO: \r carriage return is interpreted as \n in Git Bash in Windows resulting in output formatting (visual) divergance
+    printf "Candidate encryption key: 0x%s 0x%02X\r" "${ENCRYPTION_KEY1}" ${ENCRYPTION_KEY1_CHECKSUM_BIP39}
     fn_bitwiseXOR ${ENCRYPTION_KEY1} ${ENTROPY_HEX}
     ENCRYPTION_KEY2=${RESULT_XOR}
     fn_bip39_checksum ${ENCRYPTION_KEY2}
@@ -4624,3 +4634,13 @@ else
   echo "XOR"
   printf "%s \n" "${BIP39_WORDS}"
 fi
+if [ -n "$PS1" ]; then # intended to prevent closure of a terminal window by a system
+  if [ "${0%/*}" == "${0}" ] ; then
+    cd ${0%\\*}
+  else
+    cd ${0%/*}
+  fi
+  echo $PWD
+  exec ${SHELL}
+fi
+exit
