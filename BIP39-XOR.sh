@@ -4578,6 +4578,7 @@ fn_pick_at_random () {
 
 fn_parse_arguments () {
   argument=""
+  eval "set -- $@" # in order to process quoted arguments (user input) as well
   if [ $# -eq 30 -o $# -eq 36 -o $# -eq 42 -o $# -eq 48 ] ; then
     i=1
     while [ ${i} -le $(( $# / 2 )) ] ; do
