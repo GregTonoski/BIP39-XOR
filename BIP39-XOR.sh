@@ -4735,17 +4735,17 @@ if [ -z "${INPUT_CODEWORDS_ARRAY2}" ] ; then
   done
   printf "                                                                                              \r"
   fn_hex_to_bip39_eng_words "${ENCRYPTION_KEY1}" ${ENCRYPTION_KEY1_CHECKSUM_BIP39} ${BIP39_CHECKSUM_BITS_COUNT}
-  printf "%s\n" "${BIP39_WORDS}"
+  printf "%s\n" "${BIP39_WORDS% }"
   fn_hex_to_bip39_eng_words "${ENCRYPTION_KEY2}" ${ENCRYPTION_KEY2_CHECKSUM_BIP39} ${BIP39_CHECKSUM_BITS_COUNT}
   echo "XOR"
-  printf "%s\n" "${BIP39_WORDS}"
+  printf "%s\n" "${BIP39_WORDS% }"
 else
   fn_eng_words_to_hex ${INPUT_CODEWORDS_ARRAY2}
   INPUT_CODEWORDS_ARRAY2_AS_HEX=${FN_ENG_WORDS_TO_HEX_RESULT}
   fn_hex_to_bip39_eng_words $( fn_bitwiseXOR "${INPUT_CODEWORDS_ARRAY1_AS_HEX}" "${INPUT_CODEWORDS_ARRAY2_AS_HEX}" ) 0 0
   echo "${INPUT_CODEWORDS_ARRAY2% }"
   echo "XOR"
-  printf "%s\n" "${BIP39_WORDS}"
+  printf "%s\n" "${BIP39_WORDS% }"
 fi
 if [ -n "${PS1}" ] ; then # intended to prevent closure of a terminal window by a system 
   if [ -e "${SHELL}" ] ; then # intended to avoid error sometimes when using busybox
