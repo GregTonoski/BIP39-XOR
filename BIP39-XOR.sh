@@ -4733,7 +4733,7 @@ if [ -z "${INPUT_CODEWORDS_ARRAY2}" ] ; then
     fn_bip39_checksum ${ENCRYPTION_KEY2}
     ENCRYPTION_KEY2_CHECKSUM_BIP39=${FN_BIP39_CHECKSUM_RESULT}
   done
-  printf "                                                                                               \r"
+  printf "                                                                                                 \r"
   fn_hex_to_bip39_eng_words "${ENCRYPTION_KEY1}" ${ENCRYPTION_KEY1_CHECKSUM_BIP39} ${BIP39_CHECKSUM_BITS_COUNT}
   printf "%s\n" "${BIP39_WORDS% }"
   fn_hex_to_bip39_eng_words "${ENCRYPTION_KEY2}" ${ENCRYPTION_KEY2_CHECKSUM_BIP39} ${BIP39_CHECKSUM_BITS_COUNT}
