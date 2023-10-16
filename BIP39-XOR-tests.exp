@@ -1,0 +1,155 @@
+#!/usr/bin/env expect
+
+# Expect program is required to run the tests.
+
+log_file BIP39_XOR-test_results.log
+set start_seconds [timestamp]
+
+
+# Tests of user input inside the program
+spawn ./BIP39-XOR.sh
+expect "BIP39 codewords: "
+send -- "--auto-input\r"
+expect eof
+
+spawn ./BIP39-XOR.sh
+expect "BIP39 codewords: "
+send -- "--help\r"
+expect eof
+
+# Tests of user input as program arguments
+spawn ./BIP39-XOR.sh --help
+expect eof
+
+spawn ./BIP39-XOR.sh --auto-input
+expect eof
+regexp {[\w ]+\w(\r\n|\n|\r)XOR(\r\n|\n|\r)[\w ]+} $expect_out(buffer) test_auto_input_result
+regexp {([\w ]+)} $test_auto_input_result first_line_result
+spawn ./BIP39-XOR.sh [ regsub -all {(\r\n|\n|\r)} $test_auto_input_result " " ]
+expect eof
+spawn ./BIP39-XOR.sh [ regsub -all {(\r\n|\n|\r)} $expect_out(buffer) " " ]
+expect eof
+regexp -all {([\w ]+)} $expect_out(buffer) last_line_result
+if { [ string compare $first_line_result $last_line_result ] == 0 } {
+  set results(test_auto_input) "passed"
+} else {
+  set results(test_auto_input) "failed"
+}
+
+
+spawn ./BIP39-XOR.sh time until select then return void float true false case catch depart
+expect eof
+regexp {[\w ]+\w(\r\n|\n|\r)XOR(\r\n|\n|\r)[\w ]+} $expect_out(buffer) test_12_words_result
+spawn ./BIP39-XOR.sh [ regsub -all {(\r\n|\n|\r)} $test_12_words_result " " ]
+expect eof
+regexp -all {([\w ]+)} $expect_out(buffer) last_line_result
+puts $last_line_result
+if { [ string compare $last_line_result {time until select then return void float true false case catch depart} ] == 0 } {
+  set results(test_12_words) "passed"
+} else {
+  set results(test_12_words) "failed"
+}
+
+
+spawn ./BIP39-XOR.sh legal winner thank year wave sausage worth useful legal winner thank yellow
+expect eof
+
+spawn ./BIP39-XOR.sh letter advice cage absurd amount doctor acoustic avoid letter advice cage above
+expect eof
+
+spawn ./BIP39-XOR.sh letter advice cage absurd amount doctor acoustic avoid letter advice cage above
+expect eof
+
+spawn ./BIP39-XOR.sh zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo wrong
+expect eof
+
+spawn ./BIP39-XOR.sh age age age age age age age age age age age used
+expect eof
+
+# 15 words
+spawn ./BIP39-XOR.sh donate release slow bone spice balcony lizard badge address idle snack repair stock spray peanut
+expect eof
+regexp {[\w ]+\w(\r\n|\n|\r)XOR(\r\n|\n|\r)[\w ]+} $expect_out(buffer) test_15_words_result
+spawn ./BIP39-XOR.sh [ regsub -all {(\r\n|\n|\r)} $test_15_words_result " " ]
+expect eof
+regexp -all {([\w ]+)} $expect_out(buffer) last_line_result
+if { [ string compare $last_line_result {donate release slow bone spice balcony lizard badge address idle snack repair stock spray peanut} ] == 0 } {
+  set results(test_15_words) "passed"
+} else {
+  set results(test_15_words) "failed"
+}
+
+# 18 words
+spawn ./BIP39-XOR.sh legal winner thank year wave sausage worth useful legal winner thank year wave sausage worth useful legal will
+expect eof
+regexp {[\w ]+\w(\r\n|\n|\r)XOR(\r\n|\n|\r)[\w ]+} $expect_out(buffer) test_18_words_result
+spawn ./BIP39-XOR.sh [ regsub -all {(\r\n|\n|\r)} $test_18_words_result " " ]
+expect eof
+regexp -all {([\w ]+)} $expect_out(buffer) last_line_result
+if { [ string compare $last_line_result {legal winner thank year wave sausage worth useful legal winner thank year wave sausage worth useful legal will} ] == 0 } {
+  set results(test_18_words) "passed"
+} else {
+  set results(test_18_words) "failed"
+}
+
+# 21 words
+spawn ./BIP39-XOR.sh dune anchor eternal behind custom sting include wash north cheap announce wide away away shield observe bring truck sure casino okay
+expect eof
+regexp {[\w ]+\w(\r\n|\n|\r)XOR(\r\n|\n|\r)[\w ]+} $expect_out(buffer) test_21_words_result
+spawn ./BIP39-XOR.sh [ regsub -all {(\r\n|\n|\r)} $test_21_words_result " " ]
+expect eof
+regexp -all {([\w ]+)} $expect_out(buffer) last_line_result
+if { [ string compare $last_line_result {dune anchor eternal behind custom sting include wash north cheap announce wide away away shield observe bring truck sure casino okay} ] == 0 } {
+  set results(test_21_words) "passed"
+} else {
+  set results(test_21_words) "failed"
+}
+
+# 24 words
+spawn ./BIP39-XOR.sh legal winner thank year wave sausage worth useful legal winner thank year wave sausage worth useful legal winner thank year wave sausage worth title
+expect eof
+regexp {[\w ]+\w(\r\n|\n|\r)XOR(\r\n|\n|\r)[\w ]+} $expect_out(buffer) test_24_words_result
+spawn ./BIP39-XOR.sh [ regsub -all {(\r\n|\n|\r)} $test_24_words_result " " ]
+expect eof
+regexp -all {([\w ]+)} $expect_out(buffer) last_line_result
+if { [ string compare $last_line_result {legal winner thank year wave sausage worth useful legal winner thank year wave sausage worth useful legal winner thank year wave sausage worth title} ] == 0 } {
+  set results(test_24_words) "passed"
+} else {
+  set results(test_24_words) "failed"
+}
+
+# XOR combinations
+spawn ./BIP39-XOR.sh time until select then return void float true false case catch depart XOR age age age age age age age age age age age used
+expect eof
+
+if { [ regexp {age age age age age age age age age age age used(\r\n|\r|\n)XOR(\r\n|\r|\n)track turtle shy top rude vanish fuel unique final child camp steak(\r\n|\r|\n)} $expect_out(buffer) ] == 1 } {
+  set results(test_12_words_XOR_12_words) "passed"
+} else {
+  set results(test_12_words_XOR_12_words) "failed"
+}
+
+spawn ./BIP39-XOR.sh zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo party XOR zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo party
+expect eof
+if { [ regexp {zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo party(\r\n|\r|\n)XOR(\r\n|\r|\n)abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon(\r\n|\r|\n)} $expect_out(buffer) ] == 1 } {
+  set results(test_24_words_XOR_24_words) "passed"
+} else {
+  set results(test_24_words_XOR_24_words) "failed"
+}
+
+# if program detects exception and interrupts executions in the corner case (impossible BIP-39 checksum match)
+spawn ./BIP39-XOR.sh abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon agent
+expect eof
+
+spawn ./BIP39-XOR.sh abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon art
+expect eof
+
+set finish_seconds [timestamp]
+send_log "\nSummary:\n"
+foreach {key value} [array get tcl_platform] {
+  send_log "$key: $value\n"
+}
+send_log -- "$start_seconds start time\n"
+send_log -- "[expr $finish_seconds - $start_seconds] seconds of execution time.\n"
+foreach {key value} [array get results] {
+  send_log "$key: $value\n"
+}
