@@ -24,3 +24,21 @@ Generate input BIP-39 twelve codewords randomly and output two complementary enc
 ![image](https://github.com/GregTonoski/BIP39-XOR/assets/111286121/d9ed7f32-59a0-42ae-b5c2-32f47938fdb0)
 
 ![image](https://github.com/GregTonoski/BIP39-XOR/assets/111286121/a5e417b2-3c76-4650-b5e0-f50b09a703cc)
+
+## Launch on Windows
+In order to download and run the program on Windows, open PowerShell application and copy-paste this line:
+```
+Invoke-WebRequest -URI "https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.1.0/busybox.exe" -OutFile "$HOME\busybox.exe" ; Invoke-WebRequest -URI "https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.9.9/BIP39-XOR.sh" -OutFile "$HOME\BIP39-XOR.sh" ; Start-Process "$HOME\busybox.exe" "bash BIP39-XOR.sh"
+```
+The next time BIP39-XOR.sh the shorter command (without downloading) will start the program: `cd $HOME; .\busybox.exe bash BIP39-XOR.sh`.
+
+The BIP39-XOR.sh will start by double-clicking the file icon if [Git for Windows](https://git-scm.com/downloads) is installed (with the default file association settings).
+
+Alternatively, [Windows Subsytem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), [MSYS2](https://www.msys2.org/), [Cygwin](https://www.cygwin.com/) must be installed in order to launch BIP39-XOR.sh on Windows.
+## Launch on Linux, Unix, BSD and MacOS
+Download and run from a terminal: 
+```
+/bin/bash -c "$(curl -fsSL https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.9.9/BIP39-XOR.sh)"
+```
+## Launch on Android
+Open the BIP39-XOR.sh file from a terminal app, e.g. [Termux](https://play.google.com/store/apps/details?id=com.termux) or SSH.
