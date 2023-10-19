@@ -4264,7 +4264,7 @@ fn_ps_get () {
   ps_variables=""
   remainder_if_any=""
   
-  columns_headers=$( printf "${ps_output##"${ps_output%%[[:graph:]]*}"}" | { read columns_headers ; echo "${columns_headers}" ; } )
+  columns_headers=$( echo -n "${ps_output##"${ps_output%%[[:graph:]]*}"}" | { read columns_headers ; echo "${columns_headers}" ; } )
   if [ -n "${columns_headers}" -a -z "${columns_headers%%*${2}*}" ] ; then
     ps_variables=$( fn_sanitize_var_names ${columns_headers} )
     set -- ${ps_variables}
