@@ -22,7 +22,7 @@ helptext_show () {
   printf "Use input keys to decrypt and output a key. Or, equivalently, encrypt an input key with another one and output two complementary encryption keys in BIP39 format.\n\n"
   printf "$ bash BIP39-XOR.sh --auto-input\n"
   printf "Generate input BIP-39 twelve codewords randomly and output two complementary encryption keys encoded in BIP39 codewords.\n\n"
-  echo "This is the 4.9.0 version. Release date: 20231014T132800Z. Author: Greg Tonoski <greg.tonoski@gmail.com>."
+  echo "This is the 4.9.9 version. Release date: 20231019T191300Z. Author: Greg Tonoski <greg.tonoski@gmail.com>."
 }
 
 INPUT_CODEWORDS_ARRAY1=""
@@ -4228,6 +4228,87 @@ fn_hex_to_bip39_eng_words () {
   BIP39_WORDS="${words_string}"
 }
 
+
+# Keep terminal window open - the part below can be safely removed without impacting encryption/decryption results:
+# fn_sanitize_var_names (), fn_ps_get (), fn_exit ().
+# If the parent process is shell then just exit. Otherwise replace the process to keep a terminal window open.
+
+fn_sanitize_var_names () {
+  i=1
+  j=2
+  header_i=""
+  header_j=""
+
+  while [ "${i}" -le "${#}" ] ; do
+    eval "header_i=\${${i}}"
+    j=$(( ${i} + 1 ))
+    while [ "${j}" -le "${#}" ]; do 
+      eval "header_j=\${${j}}"
+      if [ "${header_i}" = "${header_j}" ] ; then
+        eval "printf \"ps_\${${i}}${i} \""
+        i=$(( i + 1 ))
+        break
+      fi
+      j=$(( ${j} + 1 ))
+    done
+    eval "printf \"ps_\${${i}} \""
+    i=$(( i + 1 ))
+  done
+}
+
+fn_ps_get () {
+  FN_PS_GET_RESULT=""
+  PID_lookup="${1}"
+  get_var="ps_${2}"
+  columns_headers=""
+  ps_variables=""
+  remainder_if_any=""
+  
+  columns_headers=$( printf "${ps_output##"${ps_output%%[[:graph:]]*}"}" | { read columns_headers ; echo "${columns_headers}" ; } )
+  if [ -n "${columns_headers}" -a -z "${columns_headers%%*${2}*}" ] ; then
+    ps_variables=$( fn_sanitize_var_names ${columns_headers} )
+    set -- ${ps_variables}
+    while read ${@} remainder_if_any ; do
+      if [ "${PID_lookup}" -eq "${ps_PID##[![:digit:]]}" ] ; then
+        eval "FN_PS_GET_RESULT=\$${get_var}"
+        break
+      fi
+    done << delimiter
+      $( printf "${ps_output#*"${columns_headers}"[[:space:]]}" )
+delimiter
+  fi
+}
+
+fn_exit () {
+  ps_output=""
+  parent_ID=""
+  parent_ID_command_name=""
+
+  if [ ! -z "${$+foobar}" ] ; then
+    if command -v ps >/dev/null ; then
+      ps_output=$( ps -ef 2> /dev/null)
+      if [ "${?}" -eq 0 ] ; then
+        fn_ps_get "${$}" 'PPID'
+        parent_ID="${FN_PS_GET_RESULT}"
+        if [ -n "${parent_ID}" ] ; then
+          fn_ps_get "${parent_ID}" 'CMD'
+          parent_ID_command_name="${FN_PS_GET_RESULT}"
+          case "${parent_ID_command_name}" in
+            "sh" | *"/sh" | [[:punct:]]"sh" | "sh "* | *"/sh "* | "bash" | *"/bash" | [[:punct:]]"bash" | "bash "* | *"/bash "* | "ksh" | *"/ksh" | [[:punct:]]"ksh" | "ksh "* | *"/ksh "* | "zsh" | *"/zsh" | [[:punct:]]"zsh" | "zsh "* | *"/zsh "* | *sh.exe | *bash.exe | *ksh.exe | *zsh.exe | "expect" | *"/expect" | "expect "* | *"/expect "* ) exit "${1}";; # TODO verify if single quotes are premitted. If not how to avoid expansion of the patterns?
+            *) ;;
+          esac
+          fn_ps_get "${parent_ID}" 'COMMAND'
+          parent_ID_command_name="${FN_PS_GET_RESULT}"
+          case "${parent_ID_command_name}" in
+            "sh" | *"/sh" | [[:punct:]]"sh" | "sh "* | *"/sh "* | "bash" | *"/bash" | [[:punct:]]"bash" | "bash "* | *"/bash "* | "ksh" | *"/ksh" | [[:punct:]]"ksh" | "ksh "* | *"/ksh "* | "zsh" | *"/zsh" | [[:punct:]]"zsh" | "zsh "* | *"/zsh "* | *sh.exe | *bash.exe | *ksh.exe | *zsh.exe | "expect" | *"/expect" | "expect "* | *"/expect "* ) exit "${1}";; # TODO verify if single quotes are premitted. If not how to avoid expansion of the patterns?
+            *) exec ${SHELL} ;;
+          esac
+        fi
+      fi
+    fi
+  fi
+}
+
 fn_right_rotate_32 (){
 
   FN_RIGHT_ROTATE_32_RESULT=0
@@ -4572,7 +4653,7 @@ fn_pick_at_random () {
   fi
   if [ -z ${#CANDIDATE_KEY} ] ; then
     printf "Error: candidate key is empty.\n"
-    exit 7
+    fn_exit 7
   fi
 }
 
@@ -4629,11 +4710,11 @@ fn_parse_arguments () {
       done
     else
       echo "ERROR: the input words are not accepted because XOR keyword/delimiter is missing or misplaced."
-      exit 2
+      fn_exit 2
     fi
   elif  [ "${1}" = "-h" -o "${1}" = "--help" ] ; then
     helptext_show
-    exit 2
+    fn_exit 2
   elif [ "${1}" = "--auto-input" ] ; then
     fn_pick_at_random 32
     ENTROPY_HEX=${CANDIDATE_KEY}
@@ -4643,7 +4724,7 @@ fn_parse_arguments () {
   else
     echo "ERROR: the input words are not accepted. Either there are too many or too few of them or the \"XOR\" delimiting keyword is missing or misplaced. There were $# words read."
     helptext_show
-    exit 1
+    fn_exit 1
   fi
 }
 
@@ -4712,7 +4793,7 @@ while [ ${#entropy_hex_substring} -gt 0 ] ; do
 done
 if [ "${sum}" -eq 0 -a ${ENTROPY_CHECKSUM_BIP39} -ne 0 ] ; then
   echo "There isn't any entropy value that would satisfy the condition of result of XOR calculation of BIP39 checksums being equal BIP39 checksum of input."
-  exit 4
+  fn_exit 4
 fi
 
 if [ -z "${INPUT_CODEWORDS_ARRAY2}" ] ; then
@@ -4728,12 +4809,11 @@ if [ -z "${INPUT_CODEWORDS_ARRAY2}" ] ; then
     ENCRYPTION_KEY1=${CANDIDATE_KEY}
     fn_bip39_checksum ${ENCRYPTION_KEY1}
     ENCRYPTION_KEY1_CHECKSUM_BIP39=${FN_BIP39_CHECKSUM_RESULT}
-    printf "Candidate encryption key: 0x%s 0x%02X\r" "${ENCRYPTION_KEY1}" ${ENCRYPTION_KEY1_CHECKSUM_BIP39}
+    printf "Candidate key: 0x%s\r" "${ENCRYPTION_KEY1}"
     ENCRYPTION_KEY2=$( fn_bitwiseXOR ${ENCRYPTION_KEY1} ${ENTROPY_HEX} )
     fn_bip39_checksum ${ENCRYPTION_KEY2}
     ENCRYPTION_KEY2_CHECKSUM_BIP39=${FN_BIP39_CHECKSUM_RESULT}
   done
-  printf "                                                                                                 \r"
   fn_hex_to_bip39_eng_words "${ENCRYPTION_KEY1}" ${ENCRYPTION_KEY1_CHECKSUM_BIP39} ${BIP39_CHECKSUM_BITS_COUNT}
   printf "%s\n" "${BIP39_WORDS% }"
   fn_hex_to_bip39_eng_words "${ENCRYPTION_KEY2}" ${ENCRYPTION_KEY2_CHECKSUM_BIP39} ${BIP39_CHECKSUM_BITS_COUNT}
@@ -4747,9 +4827,4 @@ else
   echo "XOR"
   printf "%s\n" "${BIP39_WORDS% }"
 fi
-if [ -n "${PS1}" ] ; then # intended to prevent closure of a terminal window by a system 
-  if [ -e "${SHELL}" ] ; then # intended to avoid error sometimes when using busybox
-    exec ${SHELL}
-  fi
-fi
-exit
+fn_exit 0
