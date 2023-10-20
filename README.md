@@ -40,5 +40,10 @@ Download and run from a terminal:
 ```
 curl -fsSL "https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.9.9/BIP39-XOR.sh" > BIP39-XOR.sh && bash ./BIP39-XOR.sh
 ```
+Optionally make the file executable ( `$ chmod +x BIP39-XOR.sh` ) to run it in by the shorter `./BIP39-XOR.sh` command subsequently.
 ## Launch on Android
 Open the BIP39-XOR.sh file from a terminal app, e.g. [Termux](https://play.google.com/store/apps/details?id=com.termux) or SSH.
+## Launch on iOS
+Open the BIP39-XOR.sh file from a terminal app, e.g.  [iSH Shell](https://apps.apple.com/us/app/ish-shell/id1436902243) or SSH.
+## Launch on embedded and other systems
+The program is compatible with Portable Operating System Interface (POSIX) shells so should run on various devices. The launch methods should be similar to the ones described for other systems altough may differ in details and depend on a device.
