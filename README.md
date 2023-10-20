@@ -28,7 +28,7 @@ Generate input BIP-39 twelve codewords randomly and output two complementary enc
 ## Launch on Windows
 In order to download and run the program on Windows, open PowerShell application and copy-paste this line:
 ```
-Invoke-WebRequest -URI "https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.1.0/busybox.exe" -OutFile "$HOME\busybox.exe" ; Invoke-WebRequest -URI "https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.9.9/BIP39-XOR.sh" -OutFile "$HOME\BIP39-XOR.sh" ; Start-Process "$HOME\busybox.exe" "bash BIP39-XOR.sh"
+Invoke-WebRequest -URI "https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.1.0/busybox.exe" -OutFile "$HOME\busybox.exe" ; Invoke-WebRequest -URI "https://github.com/GregTonoski/BIP39-XOR/blob/main/BIP39-XOR.sh" -OutFile "$HOME\BIP39-XOR.sh" ; Start-Process "$HOME\busybox.exe" "bash BIP39-XOR.sh"
 ```
 The next time BIP39-XOR.sh the shorter command (without downloading) will start the program: `cd $HOME; .\busybox.exe bash BIP39-XOR.sh`.
 
@@ -38,7 +38,7 @@ Alternatively, [Windows Subsytem for Linux](https://learn.microsoft.com/en-us/wi
 ## Launch on Linux, Unix, BSD and MacOS
 Download and run from a terminal: 
 ```
-curl -fsSL "https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.9.9/BIP39-XOR.sh" > BIP39-XOR.sh && bash ./BIP39-XOR.sh
+curl -fsSL "https://github.com/GregTonoski/BIP39-XOR/blob/main/BIP39-XOR.sh" > BIP39-XOR.sh && bash ./BIP39-XOR.sh
 ```
 Optionally make the file executable ( `$ chmod +x BIP39-XOR.sh` ) to run it in by the shorter `./BIP39-XOR.sh` command subsequently.
 ## Launch on Android
