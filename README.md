@@ -35,7 +35,7 @@ The next time BIP39-XOR.sh the shorter command (without downloading) will start 
 The BIP39-XOR.sh will start by double-clicking the file icon if [Git for Windows](https://git-scm.com/downloads) is installed (with the default file association settings).
 
 Alternatively, [Windows Subsytem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), [MSYS2](https://www.msys2.org/) or [Cygwin](https://www.cygwin.com/) must be installed in order to launch BIP39-XOR.sh on Windows.
-## Launch on Linux, Unix, BSD and MacOS
+## Launch on Linux, Unix, BSD, ChromeOS and MacOS
 Download and run from a terminal: 
 ```
 curl -fsSL "https://raw.githubusercontent.com/GregTonoski/BIP39-XOR/main/BIP39-XOR.sh" > BIP39-XOR.sh && bash ./BIP39-XOR.sh
