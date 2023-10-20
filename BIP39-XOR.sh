@@ -4264,17 +4264,19 @@ fn_ps_get () {
   ps_variables=""
   remainder_if_any=""
   
-  columns_headers=$( echo -n "${ps_output##"${ps_output%%[[:graph:]]*}"}" | { read columns_headers ; echo "${columns_headers}" ; } )
+  columns_headers=$( echo "${ps_output##"${ps_output%%[[:graph:]]*}"}" | { read columns_headers ; echo "${columns_headers}" ; } )
   if [ -n "${columns_headers}" -a -z "${columns_headers%%*${2}*}" ] ; then
     ps_variables=$( fn_sanitize_var_names ${columns_headers} )
     set -- ${ps_variables}
     while read ${@} remainder_if_any ; do
-      if [ "${PID_lookup}" -eq "${ps_PID##[![:digit:]]}" ] ; then
-        eval "FN_PS_GET_RESULT=\$${get_var}"
-        break
+      if [ -n "${ps_PID##[![:digit:]]}" ] ; then
+        if [ "${PID_lookup}" -eq "${ps_PID##[![:digit:]]}" ] ; then
+          eval "FN_PS_GET_RESULT=\$${get_var}"
+          break
+        fi
       fi
     done << delimiter
-      $( printf "${ps_output#*"${columns_headers}"[[:space:]]}" )
+      $( echo "${ps_output#*"${columns_headers}"[[:space:]]}" )
 delimiter
   fi
 }
