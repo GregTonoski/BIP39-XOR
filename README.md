@@ -46,4 +46,4 @@ Open the BIP39-XOR.sh file from a terminal app, e.g. [Termux](https://play.googl
 ## Launch on iOS
 Open the BIP39-XOR.sh file from a terminal app, e.g.  [iSH Shell](https://apps.apple.com/us/app/ish-shell/id1436902243) or SSH.
 ## Launch on embedded and other systems
-The program is compatible with Portable Operating System Interface (POSIX) shells so should run on various devices. The launch methods should be similar to the ones described for other systems altough may differ in details and depend on a device.
+The program is compatible with Portable Operating System Interface (POSIX) shells so should run on various electronic devices. The launch methods should be similar to the ones described for other systems altough may differ in details and depend on a device.
