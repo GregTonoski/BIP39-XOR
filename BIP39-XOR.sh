@@ -4296,19 +4296,20 @@ fn_exit () {
           fn_ps_get "${parent_ID}" 'CMD'
           parent_ID_command_name="${FN_PS_GET_RESULT}"
           case "${parent_ID_command_name}" in
-            "sh" | *"/sh" | [[:punct:]]"sh" | "sh "* | *"/sh "* | "bash" | *"/bash" | [[:punct:]]"bash" | "bash "* | *"/bash "* | "ksh" | *"/ksh" | [[:punct:]]"ksh" | "ksh "* | *"/ksh "* | "zsh" | *"/zsh" | [[:punct:]]"zsh" | "zsh "* | *"/zsh "* | *sh.exe | *bash.exe | *ksh.exe | *zsh.exe | "expect" | *"/expect" | "expect "* | *"/expect "* ) exit "${1}";; # TODO verify if single quotes are premitted. If not how to avoid expansion of the patterns?
+            "sh" | *"/sh" | [[:punct:]]"sh" | "sh "* | *"/sh "* | "ash" | *"/ash" | [[:punct:]]"ash" | "ash "* | "bash" | *"/bash" | [[:punct:]]"bash" | "bash "* | *"/bash "* | "ksh" | *"/ksh" | [[:punct:]]"ksh" | "ksh "* | *"/ksh "* | "zsh" | *"/zsh" | [[:punct:]]"zsh" | "zsh "* | *"/zsh "* | *sh.exe | *bash.exe | *ksh.exe | *zsh.exe | "expect" | *"/expect" | "expect "* | *"/expect "* ) exit "${1}";;
             *) ;;
           esac
           fn_ps_get "${parent_ID}" 'COMMAND'
           parent_ID_command_name="${FN_PS_GET_RESULT}"
           case "${parent_ID_command_name}" in
-            "sh" | *"/sh" | [[:punct:]]"sh" | "sh "* | *"/sh "* | "bash" | *"/bash" | [[:punct:]]"bash" | "bash "* | *"/bash "* | "ksh" | *"/ksh" | [[:punct:]]"ksh" | "ksh "* | *"/ksh "* | "zsh" | *"/zsh" | [[:punct:]]"zsh" | "zsh "* | *"/zsh "* | *sh.exe | *bash.exe | *ksh.exe | *zsh.exe | "expect" | *"/expect" | "expect "* | *"/expect "* ) exit "${1}";; # TODO verify if single quotes are premitted. If not how to avoid expansion of the patterns?
+            "sh" | *"/sh" | [[:punct:]]"sh" | "sh "* | *"/sh "* | "ash" | *"/ash" | [[:punct:]]"ash" | "ash "* | "bash" | *"/bash" | [[:punct:]]"bash" | "bash "* | *"/bash "* | "ksh" | *"/ksh" | [[:punct:]]"ksh" | "ksh "* | *"/ksh "* | "zsh" | *"/zsh" | [[:punct:]]"zsh" | "zsh "* | *"/zsh "* | *sh.exe | *bash.exe | *ksh.exe | *zsh.exe | "expect" | *"/expect" | "expect "* | *"/expect "* ) exit "${1}";;
             *) exec ${SHELL} ;;
           esac
         fi
       fi
     fi
   fi
+  exit
 }
 
 fn_right_rotate_32 (){
