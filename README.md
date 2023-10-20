@@ -38,7 +38,7 @@ Alternatively, [Windows Subsytem for Linux](https://learn.microsoft.com/en-us/wi
 ## Launch on Linux, Unix, BSD and MacOS
 Download and run from a terminal: 
 ```
-/bin/bash -c "$(curl -fsSL https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.9.9/BIP39-XOR.sh)"
+curl -fsSL "https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.9.9/BIP39-XOR.sh" > BIP39-XOR.sh && bash ./BIP39-XOR.sh
 ```
 ## Launch on Android
 Open the BIP39-XOR.sh file from a terminal app, e.g. [Termux](https://play.google.com/store/apps/details?id=com.termux) or SSH.
