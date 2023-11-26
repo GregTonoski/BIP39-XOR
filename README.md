@@ -50,7 +50,7 @@ Optionally make the file executable ( `$ chmod +x BIP39-XOR.sh` ) to run it in b
 
 [https://youtu.be/D68SajCozKc](https://youtu.be/D68SajCozKc)
 ## Launch on Android
-Open the BIP39-XOR.sh file from a terminal app, e.g. [Termux](https://play.google.com/store/apps/details?id=com.termux) or SSH.
+Open the BIP39-XOR.sh file from a terminal app, e.g. [Termux](https://github.com/termux/termux-app) or SSH.
 ## Launch on iOS
 Open the BIP39-XOR.sh file from a terminal app, e.g.  [iSH Shell](https://apps.apple.com/us/app/ish-shell/id1436902243) or SSH.
 ## Launch on embedded and other systems
