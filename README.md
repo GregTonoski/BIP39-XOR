@@ -25,15 +25,16 @@ Generate input BIP-39 twelve codewords randomly and output two complementary enc
 
 
 ## Launch on Windows
-In order to download and run the program on Windows, open PowerShell application and copy-paste this line:
+There are a few alternative methods to download and run the program on Windows, e.g.:
+1. Download and run the file: [BIP39-XOR_Windows.sfx.exe](https://github.com/GregTonoski/BIP39-XOR/releases/download/v5.0.0/BIP39-XOR_Windows.sfx.exe),
+2. open PowerShell application and copy-paste this line:
 ```
 Invoke-WebRequest -URI "https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.1.0/busybox.exe" -OutFile "$HOME\busybox.exe" ; Invoke-WebRequest -URI "https://raw.githubusercontent.com/GregTonoski/BIP39-XOR/main/BIP39-XOR.sh" -OutFile "$HOME\BIP39-XOR.sh" ; Start-Process "$HOME\busybox.exe" "bash BIP39-XOR.sh"
 ```
 The next time BIP39-XOR.sh the shorter command (without downloading) will start the program: `cd $HOME; .\busybox.exe bash BIP39-XOR.sh`.
 
-The BIP39-XOR.sh will start by double-clicking the file icon if [Git for Windows](https://git-scm.com/downloads) is installed (with the default file association settings).
+3. The [BIP39-XOR.sh](https://raw.githubusercontent.com/GregTonoski/BIP39-XOR/main/BIP39-XOR.sh) will start by double-clicking the icon of the downloaded file or by a command line if any of the [Git for Windows](https://git-scm.com/downloads), [Windows Subsytem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), [MSYS2](https://www.msys2.org/) or [Cygwin](https://www.cygwin.com/) is pre-installed (with the default file association settings). 
 
-Alternatively, [Windows Subsytem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), [MSYS2](https://www.msys2.org/) or [Cygwin](https://www.cygwin.com/) must be installed in order to launch BIP39-XOR.sh on Windows.
 ## Launch on Linux, Unix, BSD, ChromeOS and MacOS
 Download and run from a terminal by either:
 ```
