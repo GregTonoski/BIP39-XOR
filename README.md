@@ -29,7 +29,7 @@ There are a few alternative methods to download and run the program on Windows, 
 1. Download and run the file: [BIP39-XOR_Windows.sfx.exe](https://github.com/GregTonoski/BIP39-XOR/releases/download/v5.0.0/BIP39-XOR_Windows.sfx.exe),
 2. open PowerShell application and copy-paste this line:
 ```
-Invoke-WebRequest -URI "https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.1.0/busybox.exe" -OutFile "$HOME\busybox.exe" ; Invoke-WebRequest -URI "https://raw.githubusercontent.com/GregTonoski/BIP39-XOR/main/BIP39-XOR.sh" -OutFile "$HOME\BIP39-XOR.sh" ; Start-Process "$HOME\busybox.exe" "bash BIP39-XOR.sh"
+powershell Invoke-WebRequest -URI "https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.1.0/busybox.exe" -OutFile "$HOME\busybox.exe" ; Invoke-WebRequest -URI "https://raw.githubusercontent.com/GregTonoski/BIP39-XOR/main/BIP39-XOR.sh" -OutFile "$HOME\BIP39-XOR.sh" ; Start-Process -FilePath "$HOME\busybox.exe" -ArgumentList "bash","$HOME\BIP39-XOR.sh"
 ```
 The next time BIP39-XOR.sh the shorter command (without downloading) will start the program: `cd $HOME; .\busybox.exe bash BIP39-XOR.sh`.
 
