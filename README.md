@@ -26,7 +26,7 @@ Generate input BIP-39 twelve codewords randomly and output two complementary enc
 
 ## Launch on Windows
 There are a few alternative methods to download and run the program on Windows, e.g.:
-1. Download and run the file: [BIP39-XOR_Windows.sfx.exe](https://github.com/GregTonoski/BIP39-XOR/releases/download/v5.0.0/BIP39-XOR_Windows.sfx.exe),
+1. Download and run the file: [BIP39-XOR.sfx.exe](https://github.com/GregTonoski/BIP39-XOR/releases/download/v5.0.0/BIP39-XOR.sfx.exe),
 2. open PowerShell application and copy-paste this line:
 ```
 powershell Invoke-WebRequest -URI "https://github.com/GregTonoski/BIP39-XOR/releases/download/v4.1.0/busybox.exe" -OutFile "$HOME\busybox.exe" ; Invoke-WebRequest -URI "https://raw.githubusercontent.com/GregTonoski/BIP39-XOR/main/BIP39-XOR.sh" -OutFile "$HOME\BIP39-XOR.sh" ; Start-Process -FilePath "$HOME\busybox.exe" -ArgumentList "bash","$HOME\BIP39-XOR.sh"
