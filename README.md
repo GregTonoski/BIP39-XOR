@@ -33,7 +33,11 @@ powershell Invoke-WebRequest -URI "https://github.com/GregTonoski/BIP39-XOR/rele
 ```
 The next time BIP39-XOR.sh the shorter command (without downloading) will start the program: `cd $HOME; .\busybox.exe bash BIP39-XOR.sh`.
 
-3. The [BIP39-XOR.sh](https://raw.githubusercontent.com/GregTonoski/BIP39-XOR/main/BIP39-XOR.sh) will start by double-clicking the icon of the downloaded file or by a command line if any of the [Git for Windows](https://git-scm.com/downloads), [Windows Subsytem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install), [MSYS2](https://www.msys2.org/) or [Cygwin](https://www.cygwin.com/) is pre-installed (with the default file association settings). 
+3. The [BIP39-XOR.sh](https://raw.githubusercontent.com/GregTonoski/BIP39-XOR/main/BIP39-XOR.sh) will start by double-clicking the icon of the downloaded file or by a command line if any of the [Git for Windows](https://git-scm.com/downloads), [MSYS2](https://www.msys2.org/) or [Cygwin](https://www.cygwin.com/) is pre-installed (with the default file association settings).
+4. (recommended) [Windows Subsytem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install) if pre-installed then copy-paste this into the command prompt:
+```
+wsl.exe wget -q "https://raw.githubusercontent.com/GregTonoski/BIP39-XOR/main/BIP39-XOR.sh" && wsl.exe bash BIP39-XOR.sh
+```
 
 ## Launch on Linux, Unix, BSD, ChromeOS and MacOS
 Download and run from a terminal by either:
