@@ -52,9 +52,13 @@ curl -fsSL "https://raw.githubusercontent.com/GregTonoski/BIP39-XOR/main/BIP39-X
 ```
 Optionally make the file executable ( `$ chmod +x BIP39-XOR.sh` ) to run it in by the shorter `./BIP39-XOR.sh` command subsequently.
 ### Instructional video (how-to)
-[![BIP39-XOR instructional video](https://img.youtube.com/vi/D68SajCozKc/default.jpg)](https://youtu.be/D68SajCozKc) 
+[![BIP39-XOR on MacOS - instructional video](https://img.youtube.com/vi/TT_Do5q8Yg8/default.jpg)](https://youtu.be/TT_Do5q8Yg8)
 
-[https://youtu.be/D68SajCozKc](https://youtu.be/D68SajCozKc)
+MacOS: [https://youtu.be/TT_Do5q8Yg8](https://youtu.be/TT_Do5q8Yg8)
+
+[![BIP39-XOR on Linux - instructional video](https://img.youtube.com/vi/D68SajCozKc/default.jpg)](https://youtu.be/D68SajCozKc) 
+
+Ubuntu Linux: [https://youtu.be/D68SajCozKc](https://youtu.be/D68SajCozKc)
 ## Launch on Android
 Open the BIP39-XOR.sh file from a terminal app, e.g. [Termux](https://github.com/termux/termux-app) or SSH.
 ## Launch on iOS
