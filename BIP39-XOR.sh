@@ -4234,6 +4234,7 @@ fn_hex_to_bip39_eng_words () {
 # If the parent process is shell then just exit. Otherwise replace the process to keep a terminal window open.
 
 fn_sanitize_var_names () {
+  eval "set -- $@" # intended for compatiblity with zsh
   i=1
   j=2
   header_i=""
@@ -4267,7 +4268,7 @@ fn_ps_get () {
   columns_headers=$( echo "${ps_output##"${ps_output%%[[:graph:]]*}"}" | { read columns_headers ; echo "${columns_headers}" ; } )
   if [ -n "${columns_headers}" -a -z "${columns_headers%%*${2}*}" ] ; then
     ps_variables=$( fn_sanitize_var_names ${columns_headers} )
-    set -- ${ps_variables}
+    eval "set -- ${ps_variables}" # intended for compatiblity with zsh
     while read ${@} remainder_if_any ; do
       if [ -n "${ps_PID##[![:digit:]]}" ] ; then
         if [ "${PID_lookup}" -eq "${ps_PID##[![:digit:]]}" ] ; then
