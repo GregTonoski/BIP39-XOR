@@ -4287,7 +4287,7 @@ fn_exit () {
   parent_ID=""
   parent_ID_command_name=""
 
-  if [ ! -z "${$+foobar}" ] ; then
+  if [ ! -z "${$+foobar}" -a "${TERM_PROGRAM}" != "Apple_Terminal" ] ; then
     if command -v ps >/dev/null ; then
       ps_output=$( ps -ef 2> /dev/null)
       if [ "${?}" -eq 0 ] ; then
