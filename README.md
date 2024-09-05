@@ -62,6 +62,6 @@ Ubuntu Linux: [https://youtu.be/D68SajCozKc](https://youtu.be/D68SajCozKc)
 ## Launch on Android
 Open the BIP39-XOR.sh file from a terminal app, e.g. [Termux](https://github.com/termux/termux-app) or SSH.
 ## Launch on iOS
-Open the BIP39-XOR.sh file from a terminal app, e.g.  [iSH Shell](https://apps.apple.com/us/app/ish-shell/id1436902243), [a-Shell](https://apps.apple.com/us/app/a-shell/id1473805438), [LibTerm](https://apps.apple.com/us/app/libterm/id1380911705) etc. or SSH or [Binbag](https://newosxbook.com/tools/iOSBinaries.html).
+Open the BIP39-XOR.sh file from a terminal app, e.g.  [iSH Shell](https://apps.apple.com/us/app/ish-shell/id1436902243), [a-Shell](https://apps.apple.com/us/app/a-shell/id1473805438), [LibTerm](https://apps.apple.com/us/app/libterm/id1380911705) etc. or SSH or [Binbag](https://newosxbook.com/tools/iOSBinaries.html) or research AltStore PAL, UTM SE: Retro PC emulator etc.
 ## Launch on embedded and other systems
 The program is compatible with Portable Operating System Interface (POSIX) shells so should run on various electronic devices. The launch methods should be similar to the ones described for other systems altough may differ in details and depend on a device.
