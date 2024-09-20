@@ -2,7 +2,7 @@
 Encrypt or decrypt 12, 15, 18, 21 or 24 BIP39 codewords array (so-called "seed phrase" or "recovery phrase") using exclusive OR (XOR)/Vernam cipher (a.k.a. One Time Pad). If not input by a user, an encryption key is automatically generated at random. Encryption with such a key preserves integrity of BIP-39 checksums of all keys (that's distinct while also compatible with SeedXOR implementation).
 
 ```
-Usage: BIP39-XOR.sh [codewords...] [XOR] [codewords...]
+Usage: BIP39-XOR.sh [-s] [codewords...] [XOR] [codewords...]
        BIP39-XOR.sh [--auto-input]
 ```
 
