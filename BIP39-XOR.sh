@@ -5,6 +5,7 @@ unset HISTFILE # workaround for Git Bash  bug that copies script content to bash
 # Examples: 
 # $ bash BIP39-XOR.sh time until select then return void float true false case catch depart
 # $ bash BIP39-XOR.sh time until select then return void float true false case catch depart XOR age age age age age age age age age age age used
+# $ bash BIP39-XOR.sh -s romance wink lottery autumn shop bring dawn tongue range crater truth ability XOR online gaze whisper orbit once title room ritual magnet cheese forest travel
 # $ bash BIP39-XOR.sh time until select then return void float true false case catch depart XOR age age age age age age age age age age age used > BIP39_codewords.txt
 # $ bash BIP39-XOR.sh time until select then return void float true false case catch depart XOR $(< twelve_BIP39_codewords.txt)
 # $ bash BIP39-XOR.sh zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo party XOR zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo party
@@ -12,21 +13,26 @@ unset HISTFILE # workaround for Git Bash  bug that copies script content to bash
 # $ ./BIP39-XOR.sh age age age age age age age age age age age used XOR $( ./BIP39-XOR.sh animal loan slim stamp heavy airport carry rotate found pigeon cage shield XOR agree sorry quote park intact palm torch tiger script tomorrow jacket dolphin | tail -n 1)
 
 helptext_show () {
-  printf "Usage: BIP39-XOR.sh [codewords...] [XOR] [codewords...]\n"
+  printf "Usage: BIP39-XOR.sh [-s] [codewords...] [XOR] [codewords...]\n"
   printf "       BIP39-XOR.sh [--auto-input]\n\n"
   printf "BIP39-XOR: encrypt a BIP39 codewords array (so-called \"seed phrase\") into two complementary ones (\"encryption keys\") or decrypt.\n\n"
+  printf "  -s,                           substitute BIP-39 checksum\n"
+  printf "  -h, --help                    display this help and exit\n\n"
   printf "EXAMPLES:\n\n"
   printf "$ bash BIP39-XOR.sh time until select then return void float true false case catch depart\n"
   printf "Encrypt into and output two complementary encryption keys encoded in BIP39 codewords.\n\n"
   printf "$ bash BIP39-XOR.sh time until select then return void float true false case catch depart XOR age age age age age age age age age age age used\n"
   printf "Use input keys to decrypt and output a key. Or, equivalently, encrypt an input key with another one and output two complementary encryption keys in BIP39 format.\n\n"
+  printf "$ bash BIP39-XOR.sh -s romance wink lottery autumn shop bring dawn tongue range crater truth ability XOR online gaze whisper orbit once title room ritual magnet cheese forest travel\n"
+  printf "Same as above except the BIP-39 checksum is substituted (the last codeword is changed as a result).\n\n"
   printf "$ bash BIP39-XOR.sh --auto-input\n"
   printf "Generate input BIP-39 twelve codewords randomly and output two complementary encryption keys encoded in BIP39 codewords.\n\n"
-  echo "This is the 5.0.2 version. Release date: 20240203T192000Z. Author: Greg Tonoski <greg.tonoski@gmail.com>."
+  echo "This is the 6.0.0 version. Release date: 20240919T182000Z. Author: Greg Tonoski <greg.tonoski@gmail.com>."
 }
 
 INPUT_CODEWORDS_ARRAY1=""
 INPUT_CODEWORDS_ARRAY2=""
+OPTION_FLAG_S=""
 INPUT_CODEWORDS_ARRAY1_AS_HEX=""
 INPUT_CODEWORDS_ARRAY2_AS_HEX=""
 ENTROPY_HEX=""
@@ -4664,6 +4670,11 @@ fn_pick_at_random () {
 fn_parse_arguments () {
   argument=""
   eval "set -- $@" # in order to process quoted arguments (user input) as well
+  OPTION_FLAG_S=""
+  if [ "${1}" = "-s" ] ; then
+    OPTION_FLAG_S="true"
+    shift 1
+  fi
   if [ $# -eq 30 -o $# -eq 36 -o $# -eq 42 -o $# -eq 48 ] ; then
     i=1
     while [ ${i} -le $(( $# / 2 )) ] ; do
@@ -4821,14 +4832,22 @@ if [ -z "${INPUT_CODEWORDS_ARRAY2}" ] ; then
   fn_hex_to_bip39_eng_words "${ENCRYPTION_KEY1}" ${ENCRYPTION_KEY1_CHECKSUM_BIP39} ${BIP39_CHECKSUM_BITS_COUNT}
   printf "%s\n" "${BIP39_WORDS% }"
   fn_hex_to_bip39_eng_words "${ENCRYPTION_KEY2}" ${ENCRYPTION_KEY2_CHECKSUM_BIP39} ${BIP39_CHECKSUM_BITS_COUNT}
-  echo "XOR"
-  printf "%s\n" "${BIP39_WORDS% }"
 else
   fn_eng_words_to_hex ${INPUT_CODEWORDS_ARRAY2}
   INPUT_CODEWORDS_ARRAY2_AS_HEX=${FN_ENG_WORDS_TO_HEX_RESULT}
-  fn_hex_to_bip39_eng_words $( fn_bitwiseXOR "${INPUT_CODEWORDS_ARRAY1_AS_HEX}" "${INPUT_CODEWORDS_ARRAY2_AS_HEX}" ) 0 0
   echo "${INPUT_CODEWORDS_ARRAY2% }"
-  echo "XOR"
-  printf "%s\n" "${BIP39_WORDS% }"
+  if [ "${OPTION_FLAG_S}" ] ; then
+    ENCRYPTION_KEY1="${ENTROPY_HEX}"
+    fn_separate_entropy_and_checksum_BIP39_hex ${INPUT_CODEWORDS_ARRAY2_AS_HEX} ${BIP39_CHECKSUM_BITS_COUNT}
+    ENCRYPTION_KEY2=$( fn_bitwiseXOR ${ENCRYPTION_KEY1} ${ENTROPY_HEX} )
+    fn_bip39_checksum ${ENCRYPTION_KEY2}
+    ENCRYPTION_KEY2_CHECKSUM_BIP39=${FN_BIP39_CHECKSUM_RESULT}
+    fn_hex_to_bip39_eng_words "${ENCRYPTION_KEY2}" ${ENCRYPTION_KEY2_CHECKSUM_BIP39} ${BIP39_CHECKSUM_BITS_COUNT}
+  else
+    fn_hex_to_bip39_eng_words $( fn_bitwiseXOR "${INPUT_CODEWORDS_ARRAY1_AS_HEX}" "${INPUT_CODEWORDS_ARRAY2_AS_HEX}" ) 0 0
+  fi
 fi
+echo "XOR"
+printf "%s\n" "${BIP39_WORDS% }"
+
 fn_exit 0
