@@ -4692,18 +4692,19 @@ fn_parse_arguments () {
     INPUT_CODEWORDS_ARRAY1="${@}"
   elif [ $# -eq 13 -o $# -eq 16 -o $# -eq 19 -o $# -eq 22 ] ; then
     eval "argument=\${${#}}"
-    if [ "${argument}" = "XOR" ] ; then
+    case "${argument}" in [Xx][Oo][Rr])
       i=1
       while [ ${i} -lt  $# ] ; do
         eval "argument=\${${i}}"
         INPUT_CODEWORDS_ARRAY1="${INPUT_CODEWORDS_ARRAY1}${argument} "
         i=$(( ${i} + 1 ))
-     done
-    fi
+      done
+      ;;
+    esac
   elif [ $# -eq 25 -o $# -eq 31 -o $# -eq 37 -o $# -eq 43 -o $# -eq 49 ] ; then
     median=$(( $#/2 + 1 ))
     eval "argument=\${${median}}"
-    if [ "${argument}" = "XOR" ] ; then
+    case "${argument}" in [Xx][Oo][Rr])
       i=1
       while [ ${i} -le $(( $# / 2 )) ] ; do
         eval "argument=\${${i}}"
@@ -4716,17 +4717,20 @@ fn_parse_arguments () {
         INPUT_CODEWORDS_ARRAY2="${INPUT_CODEWORDS_ARRAY2}${argument} "
         i=$(( ${i} + 1 ))
       done
-    elif [ "${25}" = "XOR" ] ; then
-      i=1
-      while [ "${i}" -lt  25 ] ; do
-        eval "argument=\${${i}}"
-        INPUT_CODEWORDS_ARRAY1="${INPUT_CODEWORDS_ARRAY1}${argument} "
-         i=$(( ${i} + 1 ))
-      done
-    else
-      echo "ERROR: the input words are not accepted because XOR keyword/delimiter is missing or misplaced."
-      fn_exit 2
-    fi
+      ;;
+      *) if [ $# -eq 25 ] ; then
+           case "${25}" in [Xx][Oo][Rr])
+             i=1
+             while [ "${i}" -lt  25 ] ; do
+               eval "argument=\${${i}}"
+               INPUT_CODEWORDS_ARRAY1="${INPUT_CODEWORDS_ARRAY1}${argument} "
+                i=$(( ${i} + 1 ))
+             done
+             ;;
+             *) echo "ERROR: the input words are not accepted because XOR keyword/delimiter is missing or misplaced." ; fn_exit 2 ;;
+           esac
+        fi
+    esac
   elif  [ "${1}" = "-h" -o "${1}" = "--help" ] ; then
     helptext_show
     fn_exit 2
