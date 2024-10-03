@@ -41,7 +41,7 @@ The next time BIP39-XOR.sh the shorter command (without downloading) will start 
 wsl.exe bash -c "cd ~ && wget -q https://raw.githubusercontent.com/GregTonoski/BIP39-XOR/main/BIP39-XOR.sh && bash BIP39-XOR.sh"
 ```
 
-## Launch on Linux, Unix, BSD, ChromeOS and MacOS
+## Launch on Linux, Unix, BSD, ChromeOS, Haiku and MacOS
 Download and run from a terminal by either:
 ```
 wget -q "https://raw.githubusercontent.com/GregTonoski/BIP39-XOR/main/BIP39-XOR.sh" && bash BIP39-XOR.sh
