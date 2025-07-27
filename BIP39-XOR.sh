@@ -27,6 +27,7 @@ helptext_show () {
   printf "Same as above except the BIP-39 checksum is substituted (the last codeword is changed as a result).\n\n"
   printf "$ bash BIP39-XOR.sh --auto-input\n"
   printf "Generate input BIP-39 twelve codewords randomly and output two complementary encryption keys encoded in BIP39 codewords.\n\n"
+  echo "Best practice: power off a computer and run the program in an environment without persistent storage (or non-volatile memory) write access (or single-user/rescue mode Linux, LiveCD/USB, "toram" boot param.) so that secrets are erased from a computer for sure."
   echo "This is the 6.0.0 version. Release date: 20240919T182000Z. Author: Greg Tonoski <greg.tonoski@gmail.com>."
 }
 
